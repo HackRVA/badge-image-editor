@@ -12,6 +12,7 @@ class Editor extends React.Component {
         this.previousX = 0;
         this.previousY = 0;
         this.dot_flag = false;
+        this.flag = false;
         this.strokeColor = "black";
         this.lineWidth = 3;
     }
@@ -31,17 +32,34 @@ class Editor extends React.Component {
         this.ctx.closePath();
     }
     moveMouse = (movement, evt) => {
-        if (movement === "up") {
-            console.log("UP")
-        }
         if (movement === "down") {
-            console.log("DOWN")
+            this.previousX = this.currentX;
+            this.previousY = this.previousY;
+            this.currentX = evt.clientX - this.canvas.offsetLeft;
+            this.currentY = evt.clientY - this.canvas.offsetTop;
+
+            this.flag = true;
+            this.dot_flag = true;
+
+            if(this.dot_flag){
+                this.ctx.beginPath();
+                this.ctx.fillStyle = this.strokeColor;
+                this.ctx.fillRect(this.currentX, this.currentY, 3, 3);//paintbrush
+                this.ctx.closePath();
+                this.dot_flag = false;
+            }
         }
-        if (movement === "out") {
-            console.log("OUT")
+        if (movement === "up" || movement === "out") {
+            this.flag = false;
         }
         if (movement === "move") {
-            console.log("MOVE")
+            if(this.flag){
+                this.previousX = this.currentX;
+                this.previousY = this.currentY;
+                this.currentX = evt.clientX - this.canvas.offsetLeft;
+                this.currentY = evt.clientY - this.canvas.offsetTop;
+                this.draw();
+            }
         }
     }
     render() {
