@@ -16,9 +16,9 @@ class Editor extends React.Component {
         this.flag = false;
         this.strokeColor = "black";
         this.lineWidth = 3;
-        this.tempDataPoints = [];
+        this.tempDataPoints = "";
         this.state = {
-            datapoints: []
+            datapoints: ""
         }
     }
     componentDidMount = () => {
@@ -26,7 +26,7 @@ class Editor extends React.Component {
         this.ctx = this.canvas.getContext("2d");
     }
     draw = () => {
-        this.tempDataPoints.push({x: Math.floor(this.currentX/4), y: Math.floor(this.currentY/4)});
+        this.tempDataPoints += "{" + Math.floor(this.currentX/4) + ", " + Math.floor(this.currentY/4) + "},"; 
         this.ctx.beginPath();
         this.ctx.moveTo(this.previousX, this.previousY);
         this.ctx.lineTo(this.currentX, this.currentY);
@@ -37,11 +37,8 @@ class Editor extends React.Component {
     }
     saveData = () => {
         this.setState({
-            datapoints: this.tempDataPoints
+            datapoints: "{" + this.tempDataPoints.substr(0, this.tempDataPoints.length - 1) + "}"
         })
-    }
-    changeText = (newValue, evt) => {
-        console.log("newValue ", newValue)
     }
     moveMouse = (movement, evt) => {
         if (movement === "down") {
@@ -103,7 +100,7 @@ class Editor extends React.Component {
                             height="550"
                             language="cpp"
                             theme="vs-dark"
-                            value={JSON.stringify(datapoints)}
+                            value={datapoints}
                         />
                     </Grid>
                 </Grid>
