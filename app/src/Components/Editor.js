@@ -1,5 +1,6 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 import MonacoEditor from 'react-monaco-editor';
 
 class Editor extends React.Component {
@@ -15,14 +16,17 @@ class Editor extends React.Component {
         this.flag = false;
         this.strokeColor = "black";
         this.lineWidth = 3;
+        this.tempDataPoints = [];
+        this.state = {
+            datapoints: []
+        }
     }
     componentDidMount = () => {
-        console.log("CANVAS", this.refs.canvas);
         this.canvas = this.refs.canvas
         this.ctx = this.canvas.getContext("2d");
     }
     draw = () => {
-        console.log("CONTEXT ", this.ctx);
+        this.tempDataPoints.push({x: Math.floor(this.currentX/4), y: Math.floor(this.currentY/4)});
         this.ctx.beginPath();
         this.ctx.moveTo(this.previousX, this.previousY);
         this.ctx.lineTo(this.currentX, this.currentY);
@@ -30,6 +34,14 @@ class Editor extends React.Component {
         this.ctx.lineWidth = this.lineWidth;
         this.ctx.stroke();
         this.ctx.closePath();
+    }
+    saveData = () => {
+        this.setState({
+            datapoints: this.tempDataPoints
+        })
+    }
+    changeText = (newValue, evt) => {
+        console.log("newValue ", newValue)
     }
     moveMouse = (movement, evt) => {
         if (movement === "down") {
@@ -63,11 +75,12 @@ class Editor extends React.Component {
         }
     }
     render() {
+        const {datapoints} = this.state;
         return (
             <div>
                 <h1 style={{ textAlign: 'center' }}>Badge Image Editor</h1>
                 <Grid container>
-                    <Grid item xs={6} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Grid item xs={5} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <canvas
                             onMouseMove={(evt) => this.moveMouse("move", evt)}
                             onMouseDown={(evt) => this.moveMouse("down", evt)}
@@ -76,15 +89,21 @@ class Editor extends React.Component {
                             ref="canvas"
                             width={512}
                             height={512}
-                            style={{ border: '3px solid black' }}>
+                            style={{ border: '3px solid black'}}>
                         </canvas>
                     </Grid>
-                    <Grid item xs={6} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Grid item xs={2} style={{display: "flex", justifyContent: 'center', marginTop:"15px"}}>
+                        <Button onClick={this.saveData} variant="outlined" color="primary">
+                            Export to text editor
+                        </Button>
+                    </Grid>
+                    <Grid item xs={5} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop:"15px" }}>
                         <MonacoEditor
                             width="500"
                             height="550"
                             language="cpp"
                             theme="vs-dark"
+                            value={JSON.stringify(datapoints)}
                         />
                     </Grid>
                 </Grid>
