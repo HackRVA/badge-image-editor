@@ -16,7 +16,7 @@ class Editor extends React.Component {
         this.flag = false;
         this.strokeColor = "black";
         this.lineWidth = 3;
-        this.tempDataPoints = "";
+        this.tempDataPoints = [];
         this.state = {
             datapoints: ""
         }
@@ -30,7 +30,7 @@ class Editor extends React.Component {
         let canvasY = Math.floor(this.currentY/2);
         let badgeX = canvasX - 128;
         let badgeY = canvasY - 128;
-        this.tempDataPoints += `\t{ ${badgeX}, ${badgeY} },\n`;
+        this.tempDataPoints.push({x:badgeX, y: badgeY})
         this.ctx.beginPath();
         this.ctx.moveTo(this.previousX, this.previousY);
         this.ctx.lineTo(this.currentX, this.currentY);
@@ -39,9 +39,51 @@ class Editor extends React.Component {
         this.ctx.stroke();
         this.ctx.closePath();
     }
+    formatPoints = arr => {
+        return `{\n${arr.map(el => `\t{ ${el.x}, ${el.y} },\n`).join('')}\n};`
+    }
     saveData = () => {
+        const splitByAxis = (arr, axis) => {
+            let tmpArr = [[]];
+            let index = 0;
+            let lastX;
+            for(let i = 0; i < arr.length; i++){
+                if(i === 0){
+                    lastX = arr[i][axis]
+                }
+                tmpArr[index] = tmpArr[index] || [];
+                tmpArr[index].push(arr[i])
+                if(arr[i][axis] === lastX){
+                } else {
+                    lastX = arr[i][axis];
+                    index++
+                }
+            }
+            return tmpArr
+        }
+
+        const flatten = arr => [].concat.apply([], arr);
+
+        const cleanPoints = pointArr => {
+            const xPoints = splitByAxis(pointArr, "x").map( x => {
+                if(x.length > 2){
+                    return [x[0], x[x.length -1]]
+                }
+                return x
+            })
+            const yPoints = splitByAxis(flatten(xPoints), "y").map( x => {
+                if(x.length > 2){
+                    return [x[0], x[x.length -1]]
+                }
+                return x
+            })
+            return flatten(yPoints);
+        }
+
+        const dataPoints = cleanPoints(this.tempDataPoints)
+
         this.setState({
-            datapoints: `{\n${this.tempDataPoints.substr(0, this.tempDataPoints.length - 1)}\n};`
+            datapoints: this.formatPoints(dataPoints)
         })
     }
     moveMouse = (movement, evt) => {
@@ -63,7 +105,7 @@ class Editor extends React.Component {
             }
         }
         if (movement === "up") {
-            this.tempDataPoints += `\t{ -128, -128 },\n`;
+            this.tempDataPoints.push({x:-128, y: -128});
             this.flag = false;
         }
         if(movement === "out"){
