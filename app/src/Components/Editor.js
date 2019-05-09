@@ -28,16 +28,8 @@ class Editor extends React.Component {
     draw = () => {
         let canvasX = Math.floor(this.currentX/2);
         let canvasY = Math.floor(this.currentY/2);
-        let badgeX;
-        let badgeY;
-        if(canvasX === 128){
-            badgeX = 0;
-        }
-        if(canvasY === 128){
-            badgeY = 0;
-        }
-        badgeX = canvasX - 128;
-        badgeY = canvasY - 128;
+        let badgeX = canvasX - 128;
+        let badgeY = canvasY - 128;
         this.tempDataPoints += `\t{ ${badgeX}, ${badgeY} },\n`;
         this.ctx.beginPath();
         this.ctx.moveTo(this.previousX, this.previousY);
