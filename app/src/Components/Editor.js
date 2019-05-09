@@ -26,7 +26,19 @@ class Editor extends React.Component {
         this.ctx = this.canvas.getContext("2d");
     }
     draw = () => {
-        this.tempDataPoints += `\t{ ${Math.floor(this.currentX/4)}, ${Math.floor(this.currentY/4)} },\n`;
+        let canvasX = Math.floor(this.currentX/2);
+        let canvasY = Math.floor(this.currentY/2);
+        let badgeX;
+        let badgeY;
+        if(canvasX === 128){
+            badgeX = 0;
+        }
+        if(canvasY === 128){
+            badgeY = 0;
+        }
+        badgeX = canvasX - 128;
+        badgeY = canvasY - 128;
+        this.tempDataPoints += `\t{ ${badgeX}, ${badgeY} },\n`;
         this.ctx.beginPath();
         this.ctx.moveTo(this.previousX, this.previousY);
         this.ctx.lineTo(this.currentX, this.currentY);
@@ -58,7 +70,11 @@ class Editor extends React.Component {
                 this.dot_flag = false;
             }
         }
-        if (movement === "up" || movement === "out") {
+        if (movement === "up") {
+            this.tempDataPoints += `\t{ -128, -128 },\n`;
+            this.flag = false;
+        }
+        if(movement === "out"){
             this.flag = false;
         }
         if (movement === "move") {
