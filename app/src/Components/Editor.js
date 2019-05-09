@@ -26,7 +26,7 @@ class Editor extends React.Component {
         this.ctx = this.canvas.getContext("2d");
     }
     draw = () => {
-        this.tempDataPoints += "{" + Math.floor(this.currentX/4) + ", " + Math.floor(this.currentY/4) + "},"; 
+        this.tempDataPoints += `\t{ ${Math.floor(this.currentX/4)}, ${Math.floor(this.currentY/4)} },\n`;
         this.ctx.beginPath();
         this.ctx.moveTo(this.previousX, this.previousY);
         this.ctx.lineTo(this.currentX, this.currentY);
@@ -37,7 +37,7 @@ class Editor extends React.Component {
     }
     saveData = () => {
         this.setState({
-            datapoints: "{" + this.tempDataPoints.substr(0, this.tempDataPoints.length - 1) + "}"
+            datapoints: `{\n${this.tempDataPoints.substr(0, this.tempDataPoints.length - 1)}\n};`
         })
     }
     moveMouse = (movement, evt) => {
