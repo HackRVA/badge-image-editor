@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/badge-image-editor/static/css/main.584f321a.chunk.css",
-    "main.js": "/badge-image-editor/static/js/main.592f6eba.chunk.js",
-    "main.js.map": "/badge-image-editor/static/js/main.592f6eba.chunk.js.map",
+    "main.js": "/badge-image-editor/static/js/main.65a0de82.chunk.js",
+    "main.js.map": "/badge-image-editor/static/js/main.65a0de82.chunk.js.map",
     "runtime~main.js": "/badge-image-editor/static/js/runtime~main.411bddce.js",
     "runtime~main.js.map": "/badge-image-editor/static/js/runtime~main.411bddce.js.map",
     "static/css/2.451ae107.chunk.css": "/badge-image-editor/static/css/2.451ae107.chunk.css",
     "static/js/2.1585c1a4.chunk.js": "/badge-image-editor/static/js/2.1585c1a4.chunk.js",
     "static/js/2.1585c1a4.chunk.js.map": "/badge-image-editor/static/js/2.1585c1a4.chunk.js.map",
     "index.html": "/badge-image-editor/index.html",
-    "precache-manifest.d47c5fd0752896b185999feb4bef4b9f.js": "/badge-image-editor/precache-manifest.d47c5fd0752896b185999feb4bef4b9f.js",
+    "precache-manifest.87cfdd31830a2ccd08b1a81e077784f2.js": "/badge-image-editor/precache-manifest.87cfdd31830a2ccd08b1a81e077784f2.js",
     "service-worker.js": "/badge-image-editor/service-worker.js",
     "static/css/2.451ae107.chunk.css.map": "/badge-image-editor/static/css/2.451ae107.chunk.css.map",
     "static/css/main.584f321a.chunk.css.map": "/badge-image-editor/static/css/main.584f321a.chunk.css.map"

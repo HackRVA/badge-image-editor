@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "12d3fd242b09653a60f9f76969101840",
+    "revision": "736600f2842393efd740def81e3cd172",
     "url": "/badge-image-editor/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/badge-image-editor/static/css/2.451ae107.chunk.css"
   },
   {
-    "revision": "217cdfd1fb25f8aedf4d",
+    "revision": "d036441372506f3bd2b1",
     "url": "/badge-image-editor/static/css/main.584f321a.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/badge-image-editor/static/js/2.1585c1a4.chunk.js"
   },
   {
-    "revision": "217cdfd1fb25f8aedf4d",
-    "url": "/badge-image-editor/static/js/main.592f6eba.chunk.js"
+    "revision": "d036441372506f3bd2b1",
+    "url": "/badge-image-editor/static/js/main.65a0de82.chunk.js"
   },
   {
     "revision": "2b10d1a82c3384a68491",

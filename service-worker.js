@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/badge-image-editor/precache-manifest.d47c5fd0752896b185999feb4bef4b9f.js"
+  "/badge-image-editor/precache-manifest.87cfdd31830a2ccd08b1a81e077784f2.js"
 );
 
 self.addEventListener('message', (event) => {
