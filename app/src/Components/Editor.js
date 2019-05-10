@@ -2,6 +2,7 @@ import React from 'react'
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import MonacoEditor from 'react-monaco-editor';
+import Points from "./Points";
 
 class Editor extends React.Component {
     constructor() {
@@ -16,7 +17,6 @@ class Editor extends React.Component {
         this.flag = false;
         this.strokeColor = "black";
         this.lineWidth = 3;
-        this.tempDataPoints = [];
         this.state = {
             datapoints: ""
         }
@@ -30,7 +30,7 @@ class Editor extends React.Component {
         let canvasY = Math.floor(this.currentY/2);
         let badgeX = canvasX - 128;
         let badgeY = canvasY - 128;
-        this.tempDataPoints.push({x:badgeX, y: badgeY})
+        Points.pushPoint({x:badgeX, y: badgeY})
         this.ctx.beginPath();
         this.ctx.moveTo(this.previousX, this.previousY);
         this.ctx.lineTo(this.currentX, this.currentY);
@@ -39,51 +39,9 @@ class Editor extends React.Component {
         this.ctx.stroke();
         this.ctx.closePath();
     }
-    formatPoints = arr => {
-        return `{\n${arr.map(el => `\t{ ${el.x}, ${el.y} },\n`).join('')}\n};`
-    }
     saveData = () => {
-        const splitByAxis = (arr, axis) => {
-            let tmpArr = [[]];
-            let index = 0;
-            let lastX;
-            for(let i = 0; i < arr.length; i++){
-                if(i === 0){
-                    lastX = arr[i][axis]
-                }
-                tmpArr[index] = tmpArr[index] || [];
-                tmpArr[index].push(arr[i])
-                if(arr[i][axis] === lastX){
-                } else {
-                    lastX = arr[i][axis];
-                    index++
-                }
-            }
-            return tmpArr
-        }
-
-        const flatten = arr => [].concat.apply([], arr);
-
-        const cleanPoints = pointArr => {
-            const xPoints = splitByAxis(pointArr, "x").map( x => {
-                if(x.length > 2){
-                    return [x[0], x[x.length -1]]
-                }
-                return x
-            })
-            const yPoints = splitByAxis(flatten(xPoints), "y").map( x => {
-                if(x.length > 2){
-                    return [x[0], x[x.length -1]]
-                }
-                return x
-            })
-            return flatten(yPoints);
-        }
-
-        const dataPoints = cleanPoints(this.tempDataPoints)
-
         this.setState({
-            datapoints: this.formatPoints(dataPoints)
+            datapoints: Points.format()
         })
     }
     moveMouse = (movement, evt) => {
@@ -105,8 +63,9 @@ class Editor extends React.Component {
             }
         }
         if (movement === "up") {
-            this.tempDataPoints.push({x:-128, y: -128});
+            Points.pushPoint({x:-128, y: -128});
             this.flag = false;
+            this.saveData();
         }
         if(movement === "out"){
             this.flag = false;
@@ -120,6 +79,40 @@ class Editor extends React.Component {
                 this.draw();
             }
         }
+    }
+    undo = () => {
+        Points.undo();
+        this.redraw(Points.getPoints());
+        this.saveData();
+    }
+    redraw = points => {
+        if (points.length === 0) { return; }
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.strokeStyle = this.strokeColor;
+        this.ctx.lineWidth = this.lineWidth;
+        let prevX, prevY;
+        for (var i = 0; i < points.length; i++) {
+            const pt = {
+                x: (points[i].x + 128) * 2,
+                y: (points[i].y + 128) * 2
+            };
+
+            const {x:currX, y:currY} = pt
+
+            if(currX && currY){
+                this.ctx.beginPath();
+                if(prevX && prevY)
+                    this.ctx.moveTo(prevX, prevY);
+                this.ctx.lineTo(currX, currY);
+            }else{
+            }
+            this.ctx.stroke();
+            prevX = currX
+            prevY = currY
+        }
+    }
+    handleEditor = e => {
+        this.redraw(Points.parsePoints(e));
     }
     render() {
         const {datapoints} = this.state;
@@ -140,6 +133,9 @@ class Editor extends React.Component {
                         </canvas>
                     </Grid>
                     <Grid item xs={2} style={{display: "flex", justifyContent: 'center', marginTop:"15px"}}>
+                    <Button onClick={this.undo} variant="outlined" color="secondary">
+                            Undo
+                        </Button>
                         <Button onClick={this.saveData} variant="outlined" color="primary">
                             Export to text editor
                         </Button>
@@ -151,6 +147,7 @@ class Editor extends React.Component {
                             language="cpp"
                             theme="vs-dark"
                             value={datapoints}
+                            onChange={this.handleEditor}
                         />
                     </Grid>
                 </Grid>
