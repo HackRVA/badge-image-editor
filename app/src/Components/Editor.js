@@ -113,6 +113,8 @@ class Editor extends React.Component {
     }
     handleEditor = e => {
         this.redraw(Points.parsePoints(e));
+        Points.parsePoints(e).forEach(x => Points.pushPoint(x))
+        // this.saveData(Points.parsePoints(e))
     }
     render() {
         const {datapoints} = this.state;
