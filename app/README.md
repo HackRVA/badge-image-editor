@@ -2,7 +2,14 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 # Badge Image Editor
 
-Really stupidly simple image editor that allows you to create badge monsters for the RVAsec conference badge.
+Really stupidly simple image editor that allows you to create badge monsters for the RVAsec conference badge.<br>
+[https://hackrva.github.io/badge-image-editor/](Link to Badge Image Editor)
+
+## Instruction to use Badge Image Editor
+
+- Draw a badge monster inside the canvas 
+- Copy and paste the coordinates inside a .txt file
+- Send the .txt file to the badge-game-dev channel
 
 ## Available Scripts
 
@@ -10,7 +17,7 @@ In the project directory, you can run:
 
 ### `npm start`
 
-Runs the app in the development mode.<br>
+Runs the app in the development mode.c
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br>
