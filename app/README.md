@@ -3,7 +3,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 # Badge Image Editor
 
 Really stupidly simple image editor that allows you to create badge monsters for the RVAsec conference badge.<br>
-[https://hackrva.github.io/badge-image-editor/](Link to Badge Image Editor)
+[Link to Badge Image Editor](https://hackrva.github.io/badge-image-editor/)
 
 ## Instruction to use Badge Image Editor
 
